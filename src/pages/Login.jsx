@@ -3,7 +3,14 @@ import { Command } from '../assets/command';
 
 const LoginForm = ({onLogin}) => {
 
+    const mode = {
+        mode1: 'Acessar',
+        mode2: 'Registrar'
+    }
+
     const [loginData, setLoginData] = useState({ username: '', password: '' });
+    const [btnSubmit, setbtnSubmit] = useState(mode.mode1);
+    const [btnMode, setbtnMode] = useState(mode.mode2);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -11,9 +18,29 @@ const LoginForm = ({onLogin}) => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();        
-        await Command.login(loginData.username, loginData.password);
-        onLogin();
+        e.preventDefault();
+        if(btnSubmit == mode.mode1){        
+            const response = await Command.login(loginData.username, loginData.password);
+            alert(response ? 'Login efetuado com sucesso' : 'Dados incorretos')
+            setLoginData({ username: loginData.username, password: '' })
+            onLogin();
+        }else{
+            const response = await Command.register(loginData.username, loginData.password);
+            alert(response ? "Usuario registrado com sucesso, seguir com login" : 'Falha ao registrar, favor verificar os dados inseridos')
+            switchAuthMode();
+        }
+        
+    }
+
+    const switchAuthMode = ()=>{        
+        if(btnSubmit == mode.mode1){
+            setbtnSubmit(mode.mode2);
+            setbtnMode(mode.mode1);
+        }else{
+            setbtnSubmit(mode.mode1);
+            setbtnMode(mode.mode2);
+        }
+        setLoginData({ username: '', password: '' })
     }
 
     return (
@@ -21,7 +48,6 @@ const LoginForm = ({onLogin}) => {
         <h1 className="font-bold text-center pt-36 mb-10 text-7xl text-[#d9d9d9]">Colist</h1>
         <div className="flex flex-col items-center ">
           <div className="bg-[#D9D9D9] rounded-xl">
-            <h2 className="text-center bg-[#26250d] text-[#FFFFFF] rounded-t-xl p-1 uppercase">Login</h2>
             <div className="p-5">
               <form className="flex flex-col items-center text-sm" onSubmit={handleSubmit}>
               <label htmlFor="username">Usuário</label>
@@ -45,12 +71,12 @@ const LoginForm = ({onLogin}) => {
                 <button 
                 className="rounded-full bg-slate-600 p-2 w-20 mt-4 text-[#ffffff]"
                 type="submit">
-                  Logar
+                  {btnSubmit}
                 </button>
               </form>
               <div className="flex justify-around pt-8 text-sm">
-                <a className="mr-5" href="#">Esqueci Minha Senha</a>
-                <a className="ml-5" href="#" >Cadastrar</a>
+                <button className="mr-5" href="" >Esqueci Minha Senha</button>
+                <button className="ml-5" href="" onClick={switchAuthMode}>{btnMode}</button>
               </div>
             </div>
           </div>

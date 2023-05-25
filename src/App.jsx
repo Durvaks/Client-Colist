@@ -5,34 +5,35 @@ import { Command } from './assets/command';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(null);
+  const [user, setUser] = useState(null);
 
   const check = async () => {
     try {
       const response = await Command.checkUser();
       if (response) {
         setLoggedIn(true);
-        console.log('usuário já logado');
+        setUser(response.name);
       } else {
         setLoggedIn(false);
-        console.log('usuário não está logado');
       }
     } catch (error) {
       // Manipular erro, se necessário
     }
   };
 
+  const handleLogout = () => {
+    Command.logout();
+    setLoggedIn(false);
+    alert('Logout efetuado com sucesso');
+  };
+
   useEffect(() => {
     check();
   }, []);
 
-  const handleLogout = () => {
-    Command.logout();
-    check();
-  };
-
   return (
     <>
-      {loggedIn ? <Main onLogout={handleLogout} /> : <Login onLogin={check}/>}
+      {loggedIn ? <Main onLogout={handleLogout} username={user}/> : <Login onLogin={check}/>}
     </>
   );
 }

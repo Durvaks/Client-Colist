@@ -1,9 +1,8 @@
 export const Command = {
     serverMainURL: "http://localhost:3333",
     checkUser: async () => {
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {
             const token = localStorage.getItem('token');
-            console.log(token);
             fetch(`${Command.serverMainURL}/user/check`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -11,15 +10,19 @@ export const Command = {
             })
                 .then(response => response.json())
                 .then((data) => {
-                    resolve(data);
+                    if(data.status){
+                        resolve(data);
+                    }else{
+                        reject(data);
+                    }                    
                 })
                 .catch((err) => {
-                    console.log(err)
                     reject(err)
                 })
         })
     },
     login: async (user, password) => {
+        let check = false;
         await fetch(`${Command.serverMainURL}/user/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -29,20 +32,43 @@ export const Command = {
             .then((data) => {
                 if (data.send) {
                     localStorage.setItem('token', data.token)
-                    console.log('login bem sucedido');
-                } else {
-                    console.log('login não foi efetuado')
+                    check = true;
                 }
             })
             .catch(err => console.log(err))
+        return check;
     },
     logout: () => {
-        try{
-            localStorage.setItem('token', 'efetuar login');
+        try {
+            localStorage.setItem('token', '');
             return true;
-        }catch(err){
-            console.log(err);
+        } catch (err) {
             return false;
         }
+    },
+    register: async (user, password) => {
+        let check = false
+        await fetch(`${Command.serverMainURL}/user/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: 'New user', user, password }),
+        })
+            .then(response => response.json())
+            .then(data => check = data.status)
+            .catch(err => console.log(err))
+        return check;
+    },
+    getUserTaskLists: async ()=>{
+        let tasklist = []
+        const token = localStorage.getItem('token')
+        await fetch(`${Command.serverMainURL}/tasklist/user-show-all`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({token}),
+        })
+            .then(response => response.json())
+            .then(data => tasklist = data)
+            .catch(err => console.log(err))
+        return tasklist;
     }
 }

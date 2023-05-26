@@ -14,9 +14,9 @@ const Tasklist = ({ currentTask }) => {
     }, [currentTask])
 
     return (
-            <main className="">
-                <h1>{title}</h1>
-                <section>
+            <main className=" max-w-4xl m-auto">
+                <h1 className=" text-center font-bold mt-10 text-xl p-2 bg-slate-950 text-white capitalize">{title}</h1>
+                <section className="text-center mt-5">
                     <Tasks tasklistID={tasklistID}/>
                 </section>
                 <nav>

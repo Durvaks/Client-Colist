@@ -22,7 +22,7 @@ const Tasks = ({ tasklistID }) => {
     const renderTask = () => {
         return tasks.map((task) => {
             return (
-                <li key={task._id}>{task.task}</li>
+                <li className='mb-2 bg-slate-600 text-white capitalize' key={task._id}>{task.task}</li>
             )
         })
     }

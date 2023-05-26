@@ -10,11 +10,11 @@ export const Command = {
             })
                 .then(response => response.json())
                 .then((data) => {
-                    if(data.status){
+                    if (data.status) {
                         resolve(data);
-                    }else{
+                    } else {
                         reject(data);
-                    }                    
+                    }
                 })
                 .catch((err) => {
                     reject(err)
@@ -58,30 +58,45 @@ export const Command = {
             .catch(err => console.log(err))
         return check;
     },
-    getUserTaskLists: async ()=>{
-        let tasklist = []
+    getUserTaskLists: async () => {
+        let tasklistsID = []
         const token = localStorage.getItem('token')
+
         await fetch(`${Command.serverMainURL}/tasklist/user-show-all`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({token}),
+            body: JSON.stringify({ token }),
         })
             .then(response => response.json())
-            .then(data => tasklist = data)
+            .then(data => tasklistsID = data)
             .catch(err => console.log(err))
-        return tasklist;
+
+        const Tasklists = await Promise.all(tasklistsID.map(async (tasklistID) => {
+            const response = await fetch(`${Command.serverMainURL}/tasklist/show`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token, tasklistID }),
+            })  
+            const data = await response.json();
+            return data.obs
+          }));
+
+        return Tasklists
     },
-    getTasks: async (tasklistId)=>{
-        let task = []
-        const token = localStorage.getItem('token')
-        await fetch(`${Command.serverMainURL}/tasklist/user-show-all`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({token}),
-        })
-            .then(response => response.json())
-            .then(data => tasklist = data)
-            .catch(err => console.log(err))
-        return tasklist;
+    getTasks: async (tasklistID) => {
+        if(tasklistID){
+            const token = localStorage.getItem('token');
+            let tasks    
+            await fetch(`${Command.serverMainURL}/task/show`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tasklistID, token }),
+            })
+                .then(response => response.json())
+                .then(data => tasks = data)
+                .catch(err => console.log(err))   
+    
+            return tasks
+        }
     }
 }

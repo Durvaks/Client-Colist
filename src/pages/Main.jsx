@@ -1,30 +1,36 @@
 import Tasklist from './Components/Tasklist'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Command } from '../assets/command';
 
 const Main = ({ onLogout, username }) => {
+
+    const [userTasklists, setUserTasklists] = useState([]);
+    const [currentTask, setCurrentTask] = useState(null);
+
+    useEffect(() => {
+        getTasklists()
+    }, []);
+
+    const getTasklists = async () => {
+        Command.getUserTaskLists()
+            .then((tasklists) => {
+                setUserTasklists(tasklists);
+            })
+    };
+
+    useEffect(() => {
+        changeUserTasklist(1); // não esquecer de alterar aqui
+    }, [userTasklists]);
+
+    const changeUserTasklist = (index) => {
+        if (userTasklists.length > 0) {
+            setCurrentTask(userTasklists[index || 0]);
+        }
+    }
+
     const handleLogoutClick = () => {
         onLogout();
     };
-
-    const [userTasklists, setUserTasklists] = useState([]);
-    const [currentTasks, setCurrentTasks] = useState([]);
-
-    const getTasklists = async ()=>{
-        Command.getUserTaskLists()
-        .then((tasklists)=>{
-            setUserTasklists(tasklists)
-        })
-
-        Command.getTasks(userTasklists[0])
-        .then((tasks)=>{
-            
-        })
-
-
-    }
-    getTasklists();
-
 
     return (
         <div>
@@ -35,7 +41,8 @@ const Main = ({ onLogout, username }) => {
             <header className=' h-28 flex justify-center'>
                 <h1 className='self-center font-bold text-7xl'>CoList</h1>
             </header>
-            <Tasklist onViewTaskList={currentTaskList}/>
+            <Tasklist currentTask={currentTask} />
+
         </div>
     );
 };

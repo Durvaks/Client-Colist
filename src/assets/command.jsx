@@ -70,5 +70,18 @@ export const Command = {
             .then(data => tasklist = data)
             .catch(err => console.log(err))
         return tasklist;
+    },
+    getTasks: async (tasklistId)=>{
+        let task = []
+        const token = localStorage.getItem('token')
+        await fetch(`${Command.serverMainURL}/tasklist/user-show-all`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({token}),
+        })
+            .then(response => response.json())
+            .then(data => tasklist = data)
+            .catch(err => console.log(err))
+        return tasklist;
     }
 }

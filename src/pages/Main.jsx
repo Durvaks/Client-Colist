@@ -7,14 +7,24 @@ const Main = ({ onLogout, username }) => {
         onLogout();
     };
 
-    const [currentTaskList, setcurrentTaskList] = useState([]);
-    const getTasklist = async ()=>{
+    const [userTasklists, setUserTasklists] = useState([]);
+    const [currentTasks, setCurrentTasks] = useState([]);
+
+    const getTasklists = async ()=>{
         Command.getUserTaskLists()
         .then((tasklists)=>{
-            setcurrentTaskList(tasklists[0])
+            setUserTasklists(tasklists)
         })
+
+        Command.getTasks(userTasklists[0])
+        .then((tasks)=>{
+            
+        })
+
+
     }
-    getTasklist();
+    getTasklists();
+
 
     return (
         <div>

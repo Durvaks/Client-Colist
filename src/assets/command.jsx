@@ -72,10 +72,10 @@ export const Command = {
             .catch(err => console.log(err))
         return tasklists
     },
-    getTasklist: async (tasklistID)=>{
-        if(tasklistID){
+    getTasklist: async (tasklistID) => {
+        if (tasklistID) {
             const token = localStorage.getItem('token');
-            let tasks    
+            let tasks
             await fetch(`${Command.serverMainURL}/tasklist/show`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -83,15 +83,15 @@ export const Command = {
             })
                 .then(response => response.json())
                 .then(data => tasks = data)
-                .catch(err => console.log(err))   
-    
+                .catch(err => console.log(err))
+
             return tasks
         }
     },
     getTasks: async (tasklistID) => {
-        if(tasklistID){
+        if (tasklistID) {
             const token = localStorage.getItem('token');
-            let tasks    
+            let tasks
             await fetch(`${Command.serverMainURL}/task/show`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -99,13 +99,13 @@ export const Command = {
             })
                 .then(response => response.json())
                 .then(data => tasks = data)
-                .catch(err => console.log(err))   
-    
+                .catch(err => console.log(err))
+
             return tasks
         }
     },
     getTask: async (taskID) => {
-        if(taskID){
+        if (taskID) {
             const token = localStorage.getItem('token');
             await fetch(`${Command.serverMainURL}/task/show`, {
                 method: 'POST',
@@ -114,9 +114,37 @@ export const Command = {
             })
                 .then(response => response.json())
                 .then(data => tasks = data)
-                .catch(err => console.log(err))   
-    
+                .catch(err => console.log(err))
+
             return tasks
         }
+    },
+    setTask: async (tasklistID, text) => {
+        // backend need == {tasklist, task, token}
+        let tasks = ''
+        const token = localStorage.getItem('token');
+        await fetch(`${Command.serverMainURL}/task/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tasklist: tasklistID, task: text, token }),
+        })
+            .then(response => response.json())
+            .then(data => tasks = data)
+            .catch(err => console.log(err))
+        return tasks
+    },
+    removeTask: async (tasklistID, taskID) => {
+        // backend need == {tasklist, task, token}
+        let tasks = ''
+        const token = localStorage.getItem('token');
+        await fetch(`${Command.serverMainURL}/task/delete`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tasklist: tasklistID, task: taskID, token }),
+        })
+            .then(response => response.json())
+            .then(data => tasks = data)
+            .catch(err => console.log(err))
+        return tasks
     }
 }

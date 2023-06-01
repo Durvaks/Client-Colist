@@ -12,25 +12,24 @@ const Main = ({ onLogout, username }) => {
     const getTasklists = async () => {
         Command.getUserTaskLists()
             .then((tasklists) => {
-                setUserTasklists(tasklists);
+                setUserTasklists(tasklists)
             })
             .catch((err) => {
                 console.error
             })
-    };
-
+    }
     const changeUserTasklist = (index) => { //<-- chatgpt verificar esta função
         if (userTasklists[index]?._id === currentTask?._id) {
             setCurrentTask(null);
         } else if (userTasklists.length > 0) {
-            setCurrentTask(userTasklists[index || 0]);
+            setCurrentTask(userTasklists[index || 0])
         }
     }
     const setTask = async (text) => {
         Command.setTask(currentTask._id, text)
             .then(async (response) => {
                 if (response.response) {
-                    await getTasklists();
+                    await getTasklists()
                 }
             })
             .catch((err) => {
@@ -48,6 +47,16 @@ const Main = ({ onLogout, username }) => {
                 console.log(err)
             })
     }
+    const removeTasklist = async ()=>{
+        Command.removeTasklist(currentTask._id)
+            .then(async (response) => {
+                console.log(response)
+                await getTasklists()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     useEffect(() => {
         getTasklists()
@@ -58,7 +67,6 @@ const Main = ({ onLogout, username }) => {
             changeUserTasklist(0);
         }
     }, [currentTask])
-
     useEffect(() => {
         changeUserTasklist(0)
         // if(userTasklists.length > 0){
@@ -71,23 +79,24 @@ const Main = ({ onLogout, username }) => {
     }, [userTasklists]);
 
     return (
-        <div className=' min-w-[500px] bg-gradient-to-b from-sky-500 to-indigo-500'>
-            <nav className=" flex bg-slate-600 justify-end h-8 text-white">
-                <span className="mr-4">{username}</span>
-                <button className="mr-5 m-1 pl-2 pr-2 rounded bg-red-950" onClick={onLogout}> Sair </button>
+        <div className='h-screen min-h-screen bg-gradient-to-b from-teal-600 to-violet-900'>
+            <nav className="flex bg-sky-950 justify-between h-8 text-white w-screen">
+                <span className="mr-4 text-emerald-300 drop-shadow-lg font-bold ml-4 p-1">Colist</span>
+                <div>
+                    <span className="mr-4">{username}</span>
+                    <button className="mr-5 m-1 pl-2 pr-2 rounded bg-red-950" onClick={onLogout}> Sair </button>
+                </div>
             </nav>
-            <header className=' h-28 flex justify-center'>
-                <h1 className='self-center font-bold text-7xl text-slate-900 drop-shadow-lg'>CoList</h1>
-            </header>
-            <main className=" max-w-4xl m-auto ">
+            <main className=" max-w-4xl m-auto h-[95%] relative w-screen">
                 <Tasklist
                     currentTask={currentTask}
                     removeTask={removeTask}
                 />
-                <div className=''>
+                <div className='absolute w-full bottom-0'>
                     <Navgator
                         switchTasklist={changeUserTasklist}
                         userTasklists={userTasklists}
+                        removeTasklist={removeTasklist}
                     />
                     <FormNewTask
                         setTask={setTask}

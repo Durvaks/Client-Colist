@@ -41,7 +41,7 @@ const Tasks = ({ tasklistID, removeTask }) => {
     }, [tasks])
 
     return (
-        <ul className=' max-h-[75vh] overflow-y-scroll scroll-pl-2'>
+        <ul className=' max-h-[57vh] overflow-y-scroll scroll-pl-2'>
             {renderTask()}
         </ul>
     )

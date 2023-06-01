@@ -88,6 +88,34 @@ export const Command = {
             return tasks
         }
     },
+    removeTasklist: async (tasklistID) => {
+        // backend need == {token, tasklistID}
+        let response = ''
+        const token = localStorage.getItem('token');
+        await fetch(`${Command.serverMainURL}/tasklist/delete`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tasklistID, token }),
+        })
+            .then(response => response.json())
+            .then(data => response = data)
+            .catch(err => console.log(err))
+        return response;
+    },
+    createTasklist: async (title)=>{
+        // backend need == {title, token}
+        let response = ''
+        const token = localStorage.getItem('token');
+        await fetch(`${Command.serverMainURL}/tasklist/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, token }),
+        })
+            .then(response => response.json())
+            .then(data => response = data)
+            .catch(err => console.log(err))
+        return response;
+    },
     getTasks: async (tasklistID) => {
         if (tasklistID) {
             const token = localStorage.getItem('token');

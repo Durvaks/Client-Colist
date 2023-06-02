@@ -5,9 +5,10 @@ import { ChevronUpIcon } from '@heroicons/react/24/solid'
 const Navgator = (props) => {
     const [tasklists, setTasklists] = useState([])
     const [isOpen, setIsOpen] = useState(false)
+    const [titleForNewList, setTitleForNewList] = useState('New List')
 
     const menuData = () => {
-        if (props.userTasklists.length > 0) {
+        if (props.userTasklists.length > 0 && props.userTasklists[0] !== 'start') {
             const tasklistElements = props.userTasklists.map((tasklist, index) => {
                 if (tasklist == null) {
                     return
@@ -27,6 +28,10 @@ const Navgator = (props) => {
             })
             setTasklists(tasklistElements)
         }
+    }
+    const btnCreateNewList = ()=>{
+        props.createTasklist(titleForNewList)
+        setIsOpen(false)
     }
 
     useEffect(() => {
@@ -90,11 +95,16 @@ const Navgator = (props) => {
                             <Dialog.Title>Create New List</Dialog.Title>
                             <div className="flex">
                                 <label htmlFor="title">Title</label>
-                                <input className="ml-3 w-full text-black" type="text" name="title" id="title" />
+                                <input className="ml-3 w-full text-black" 
+                                    type="text" 
+                                    name="title" 
+                                    id="title"
+                                    onChange={(event)=>{setTitleForNewList(event.target.value)}}
+                                />
                             </div>
                             <div className="flex flex-row-reverse">
                                 <button className="rounded bg-emerald-800 p-1 pl-2 pr-2"
-                                    onClick={() => { setIsOpen(false) }}
+                                    onClick={btnCreateNewList}
                                 >
                                     Create
                                 </button>
@@ -103,7 +113,7 @@ const Navgator = (props) => {
                     </Dialog.Panel>
                 </Dialog>
                 <button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                    onClick={() => { setIsOpen(true) }}
+                    onClick={()=>{setIsOpen(true)}}
                 >
                     create new List
                 </button>

@@ -6,7 +6,7 @@ import { Command } from '../assets/command';
 
 const Main = ({ onLogout, username }) => {
 
-    const [userTasklists, setUserTasklists] = useState({});
+    const [userTasklists, setUserTasklists] = useState(['start']);
     const [currentTask, setCurrentTask] = useState(null);
 
     const getTasklists = async () => {
@@ -18,9 +18,10 @@ const Main = ({ onLogout, username }) => {
                 console.error
             })
     }
-    const changeUserTasklist = (index) => { //<-- chatgpt verificar esta função
+    const changeUserTasklist = (index) => {
         if (userTasklists[index]?._id === currentTask?._id) {
             setCurrentTask(null);
+            setCurrentTask(userTasklists[index || 0]);
         } else if (userTasklists.length > 0) {
             setCurrentTask(userTasklists[index || 0])
         }
@@ -47,10 +48,20 @@ const Main = ({ onLogout, username }) => {
                 console.log(err)
             })
     }
-    const removeTasklist = async ()=>{
+    const removeTasklist = async () => {
         Command.removeTasklist(currentTask._id)
             .then(async (response) => {
                 console.log(response)
+                await getTasklists()
+
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+    const createTasklist = async (title) => {
+        Command.createTasklist(title)
+            .then(async (response) => {
                 await getTasklists()
             })
             .catch((err) => {
@@ -63,19 +74,14 @@ const Main = ({ onLogout, username }) => {
     }, []);
 
     useEffect(() => {
-        if (currentTask == null) {
-            changeUserTasklist(0);
+        if(userTasklists[0] !== 'start'){
+            if (userTasklists.length) {
+                changeUserTasklist(userTasklists.length - 1)
+            }else{    
+                createTasklist('List');
+                changeUserTasklist(0);                  
+            }
         }
-    }, [currentTask])
-    useEffect(() => {
-        changeUserTasklist(0)
-        // if(userTasklists.length > 0){
-        //     userTasklists.forEach((element, index) => {
-        //         if(element.current){
-        //             changeUserTasklist(index)
-        //         }
-        //     })
-        // }
     }, [userTasklists]);
 
     return (
@@ -97,6 +103,7 @@ const Main = ({ onLogout, username }) => {
                         switchTasklist={changeUserTasklist}
                         userTasklists={userTasklists}
                         removeTasklist={removeTasklist}
+                        createTasklist={createTasklist}
                     />
                     <FormNewTask
                         setTask={setTask}

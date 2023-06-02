@@ -68,6 +68,17 @@ const Main = ({ onLogout, username }) => {
                 console.log(err)
             })
     }
+    const renameTasklist = async (newTitle)=>{
+        await Command.renameTasklist(currentTask._id, newTitle)
+        .then(async ()=>{
+            await getTasklists();
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+
+
 
     useEffect(() => {
         getTasklists()
@@ -79,7 +90,7 @@ const Main = ({ onLogout, username }) => {
                 changeUserTasklist(userTasklists.length - 1)
             }else{    
                 createTasklist('List');
-                changeUserTasklist(0);                  
+                changeUserTasklist(0);
             }
         }
     }, [userTasklists]);
@@ -89,7 +100,7 @@ const Main = ({ onLogout, username }) => {
             <nav className="flex bg-sky-950 justify-between h-8 text-white w-screen">
                 <span className="mr-4 text-emerald-300 drop-shadow-lg font-bold ml-4 p-1">Colist</span>
                 <div>
-                    <span className="mr-4">{username}</span>
+                    <span className="mr-4" >{username}</span>
                     <button className="mr-5 m-1 pl-2 pr-2 rounded bg-red-950" onClick={onLogout}> Sair </button>
                 </div>
             </nav>
@@ -97,6 +108,7 @@ const Main = ({ onLogout, username }) => {
                 <Tasklist
                     currentTask={currentTask}
                     removeTask={removeTask}
+                    renameTasklist={renameTasklist}
                 />
                 <div className='absolute w-full bottom-0'>
                     <Navgator

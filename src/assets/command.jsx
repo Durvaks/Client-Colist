@@ -1,5 +1,5 @@
 export const Command = {
-    serverMainURL: "http://localhost:3333",
+    serverMainURL: 'http://localhost:3333',
     checkUser: async () => {
         return new Promise((resolve, reject) => {
             const token = localStorage.getItem('token');
@@ -46,12 +46,12 @@ export const Command = {
             return false;
         }
     },
-    register: async (user, password) => {
+    register: async (user, password, name) => {
         let check = false
         await fetch(`${Command.serverMainURL}/user/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: 'New user', user, password }),
+            body: JSON.stringify({ name, user, password }),
         })
             .then(response => response.json())
             .then(data => check = data.status)
@@ -110,6 +110,20 @@ export const Command = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title, token }),
+        })
+            .then(response => response.json())
+            .then(data => response = data)
+            .catch(err => console.log(err))
+        return response;
+    },
+    renameTasklist:async (tasklistID, newTitle)=>{
+        //{ newTitle, tasklistID, token } backend request
+        let response = ''
+        const token = localStorage.getItem('token');
+        await fetch(`${Command.serverMainURL}/tasklist/update-title`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newTitle, tasklistID, token }),
         })
             .then(response => response.json())
             .then(data => response = data)

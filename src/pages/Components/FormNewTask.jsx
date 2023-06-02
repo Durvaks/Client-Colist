@@ -1,4 +1,7 @@
 import { useState } from "react"
+import { PencilSquareIcon } from "@heroicons/react/24/solid";
+
+
 const FormNewTask = (props) => {
     const [text, setText] = useState('');
 
@@ -19,10 +22,10 @@ const FormNewTask = (props) => {
             >
             </textarea>
             <button
-                className=" bg-slate-500 w-1/5 float-right mr-2 text-white rounded-sm h-[100px]"
+                className=" bg-slate-500 w-1/5 float-right mr-2 text-white rounded-sm h-[100px] flex justify-center items-center"
                 onClick={handleClickButton}
             >
-                Adicionar
+                <PencilSquareIcon className="w-8"/>
             </button>
         </div>
     )

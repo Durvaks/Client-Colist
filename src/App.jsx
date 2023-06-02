@@ -7,7 +7,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(null);
   const [user, setUser] = useState(null);
 
-  const check = async () => {
+  const checkUserStatus = async () => {
     try {
       const response = await Command.checkUser();
       if (response) {
@@ -17,7 +17,7 @@ function App() {
         setLoggedIn(false);
       }
     } catch (error) {
-      // Manipular erro, se necessário
+      // Tratar o erro, se necessário
     }
   };
 
@@ -28,13 +28,13 @@ function App() {
   };
 
   useEffect(() => {
-    check();
+    checkUserStatus();
   }, []);
 
-  return (
-    <>
-      {loggedIn ? <Main onLogout={handleLogout} username={user}/> : <Login onLogin={check}/>}
-    </>
+  return loggedIn ? (
+    <Main onLogout={handleLogout} username={user} />
+  ) : (
+    <Login onLogin={checkUserStatus} />
   );
 }
 

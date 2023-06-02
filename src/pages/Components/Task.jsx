@@ -31,8 +31,10 @@ const Tasks = ({ tasklistID, removeTask }) => {
     }
 
     useEffect(() => {
-        if (tasklistID.length !== 0) {
-            getTasks();
+        if(tasklistID !== undefined){
+            if (tasklistID.length !== 0) {
+                getTasks();
+            }
         }
     }, [tasklistID])
 

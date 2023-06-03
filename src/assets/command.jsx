@@ -1,5 +1,5 @@
 export const Command = {
-    serverMainURL: 'http://localhost:3333',
+    serverMainURL: 'http://18.230.184.131:3333',
     checkUser: async () => {
         return new Promise((resolve, reject) => {
             const token = localStorage.getItem('token');

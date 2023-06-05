@@ -17,10 +17,10 @@ const Navgator = (props) => {
                     <Menu.Item key={tasklist._id}>
                         {({ active }) => (
                             <a
-                                className={`${active && 'bg-blue-500 rounded pl-1 cursor-pointer'}`}
+                                className={`${active && 'bg-blue-500 rounded pl-1 cursor-pointer'} truncate`}
                                 onClick={() => { props.switchTasklist(index) }}
                             >
-                                {tasklist.title.substring(0, 20) + "..."}
+                                {tasklist.title}
                             </a>
                         )}
                     </Menu.Item>
@@ -46,11 +46,11 @@ const Navgator = (props) => {
             <Menu>
                 <div>
                     <Menu.Items className='relative top-0'>
-                        <div className="absolute bottom-1 w-44 border-2 border-indigo-500 bg-indigo-600 bg-opacity-90 rounded flex flex-col p-1 text-white capitalize gap-1">
+                        <div className="absolute bottom-1 w-44 bg-opacity-90 bg-slate-800 rounded flex flex-col p-1 pl-2 text-white capitalize gap-1">
                             {tasklists}
                         </div>
                     </Menu.Items>
-                    <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                    <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-50 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                         My Lists
                         <ChevronUpIcon
                             className="ml-2 -mr-1 h-5 w-5 text-white hover:text-violet-100"
@@ -62,7 +62,7 @@ const Navgator = (props) => {
             <Menu>
                 <div>
                     <Menu.Items className='relative top-0'>
-                        <div className="absolute bottom-1 w-44 border-2 border-indigo-500 bg-indigo-600 bg-opacity-90 rounded flex flex-col p-1 text-white capitalize gap-1">
+                        <div className="absolute bottom-1 w-44 bg-opacity-90 bg-slate-800 rounded flex flex-col p-1 text-white capitalize gap-1">
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
@@ -75,7 +75,7 @@ const Navgator = (props) => {
                             </Menu.Item>
                         </div>
                     </Menu.Items>
-                    <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                    <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-50 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                         Options
                         <ChevronUpIcon
                             className="ml-2 -mr-1 h-5 w-5 text-black hover:text-violet-100"

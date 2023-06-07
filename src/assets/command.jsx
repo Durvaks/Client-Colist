@@ -1,5 +1,5 @@
 export const Command = {
-    serverMainURL: 'http://18.231.157.6:3333/api/proxy',
+    serverMainURL: 'https://colist.xanuvas.workers.dev/',
     checkUser: async () => {
         return new Promise((resolve, reject) => {
             const token = localStorage.getItem('token');

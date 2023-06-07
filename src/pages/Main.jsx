@@ -3,6 +3,7 @@ import FormNewTask from './Components/FormNewTask';
 import Navgator from './Components/Navgator';
 import { useState, useEffect } from 'react';
 import { Command } from '../assets/command';
+import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid';
 
 const Main = ({ onLogout, username }) => {
 
@@ -77,7 +78,7 @@ const Main = ({ onLogout, username }) => {
             console.log(err)
         })
     }
-
+    
 
 
     useEffect(() => {
@@ -97,11 +98,13 @@ const Main = ({ onLogout, username }) => {
 
     return (
         <div className='h-screen min-h-screen bg-gradient-to-b from-teal-600 to-violet-900'>
-            <nav className="flex bg-sky-950 justify-between h-8 text-white w-screen">
+            <nav className="flex bg-sky-950 justify-between h-8 text-white w-full">
                 <span className="mr-4 text-emerald-300 drop-shadow-lg font-bold ml-4 p-1">Colist</span>
-                <div>
-                    <span className="mr-4" >{username}</span>
-                    <button className="mr-5 m-1 pl-2 pr-2 rounded bg-red-950" onClick={onLogout}> Sair </button>
+                <div className=' flex'>
+                    <span className="mr-4 " >{username}</span>
+                    <button className="mr-4 m-1  w-5 h-full mt-0" onClick={onLogout}>
+                        <ArrowRightOnRectangleIcon className=''/>
+                    </button>
                 </div>
             </nav>
             <main className=" max-w-4xl m-auto h-[95%] relative w-screen">

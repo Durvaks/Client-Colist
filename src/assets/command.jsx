@@ -1,5 +1,5 @@
 export const Command = {
-    serverMainURL: 'http://18.230.184.131:3333',
+    serverMainURL: 'http://localhost:3333',//'http://18.230.184.131:3333'
     checkUser: async () => {
         return new Promise((resolve, reject) => {
             const token = localStorage.getItem('token');
@@ -102,7 +102,7 @@ export const Command = {
             .catch(err => console.log(err))
         return response;
     },
-    createTasklist: async (title)=>{
+    createTasklist: async (title) => {
         // backend need == {title, token}
         let response = ''
         const token = localStorage.getItem('token');
@@ -116,7 +116,7 @@ export const Command = {
             .catch(err => console.log(err))
         return response;
     },
-    renameTasklist:async (tasklistID, newTitle)=>{
+    renameTasklist: async (tasklistID, newTitle) => {
         //{ newTitle, tasklistID, token } backend request
         let response = ''
         const token = localStorage.getItem('token');
@@ -183,6 +183,28 @@ export const Command = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ tasklist: tasklistID, task: taskID, token }),
+        })
+            .then(response => response.json())
+            .then(data => tasks = data)
+            .catch(err => console.log(err))
+        return tasks
+    },
+    changeStatus: async (tasklistID, taskID, newStatus) => {
+        let tasks = ''
+        const token = localStorage.getItem('token');
+        await fetch(`${Command.serverMainURL}/task/update`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                {
+                    token,
+                    tasklist: tasklistID,
+                    params: {
+                        task: taskID,
+                        alteration: { status: newStatus }
+                    }
+                }
+            ),
         })
             .then(response => response.json())
             .then(data => tasks = data)

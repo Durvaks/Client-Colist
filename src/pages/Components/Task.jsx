@@ -1,7 +1,7 @@
 import { Command } from '../../assets/command';
 import { useEffect, useState } from 'react';
 import { Menu } from '@headlessui/react';
-import { TrashIcon, Bars2Icon, CheckIcon } from '@heroicons/react/24/solid'
+import { TrashIcon, Bars2Icon, CheckIcon, ArrowPathIcon, ClockIcon } from '@heroicons/react/24/solid'
 
 const Tasks = ({ tasklistID, removeTask }) => {
     const [tasks, setTasks] = useState([])
@@ -11,7 +11,6 @@ const Tasks = ({ tasklistID, removeTask }) => {
         const tasks = await Command.getTasks(tasklistID);
         setTasks(tasks);
     }
-
     const selectTask = (task) => {
         if (taskSelected._id === task._id) {
             setTaskSelected('')
@@ -19,6 +18,32 @@ const Tasks = ({ tasklistID, removeTask }) => {
             setTaskSelected(task);
         }
     }
+    const changeStatus = async ()=>{
+        let nextStatus = ''
+        switch (taskSelected.status) {
+            case 'Pending':
+                nextStatus = 'In Progress'
+                break;
+            case 'In Progress':
+                nextStatus = 'Completed'
+                break;
+            case 'Completed':
+                nextStatus = 'Pending'
+                break;        
+            default:
+                nextStatus = 'Pending'
+                break;
+        }
+        Command.changeStatus(tasklistID, taskSelected._id, nextStatus)
+        .then(()=>{
+            setTaskSelected('')
+            getTasks()
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+
 
     const renderTask = () => {
         return tasks.map((task) => {
@@ -26,7 +51,17 @@ const Tasks = ({ tasklistID, removeTask }) => {
                 <li className={`${taskSelected._id === task._id ? ' border border-yellow-500' : ''} bg-slate-600 bg-opacity-70 text-white mb-2 min-h-[35px]  capitalize flex justify-between pt-1 pb-2 rounded`}
                     key={task._id}
                 >
-                    <span className='pl-4 text-left w-full'
+                    <span className={`pl-4 text-left w-full
+                        ${(()=>{
+                            if(task.status === 'Completed'){
+                                return 'bg-green-400 bg-opacity-60'
+                            }else if(task.status === 'In Progress'){
+                                return 'bg-yellow-400'
+                            }else{
+                                return ''
+                            }
+                        })()}
+                    `}
                         onClick={() => { selectTask(task) }}
                     >
                         {task.task}
@@ -43,9 +78,22 @@ const Tasks = ({ tasklistID, removeTask }) => {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button className='rounded w-full min-w-[2.5rem] text-green-500 flex pt-1 pl-2'
-                                                        onClick={() => { alert('em desenvolvimento') }}
+                                                        onClick={changeStatus}
                                                     >
-                                                        <span className='flex gap-2'><CheckIcon className='w-4 text-green-500'/>status</span>
+                                                        <span className='flex gap-2'>
+                                                            {(()=>{
+                                                                const icon = ()=>{
+                                                                    if(task.status === 'Completed'){
+                                                                        return <CheckIcon className='w-4 text-green-500'/>
+                                                                    }else if(task.status === 'in Progress'){
+                                                                        return <ArrowPathIcon className='w-4 text-yellow-500'/>
+                                                                    }else{
+                                                                        return <ClockIcon className='w-4 text-red-500'/>
+                                                                    }
+                                                                }
+                                                                return (<>{icon()}{task.status}</>)
+                                                            })()}                                                            
+                                                        </span>
                                                     </button>
                                                 )}
                                             </Menu.Item>

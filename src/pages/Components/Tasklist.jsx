@@ -49,7 +49,7 @@ const Tasklist = ({ currentTask, removeTask, renameTasklist }) => {
     },[tasklistID])
 
     return (
-        <div className="">
+        <div className="h-[65%]">
             <h1 className=" flex justify-between drop-shadow-lg font-bold text-[2rem] border-b-2  pt-10 p-2 border-indigo-900 text-indigo-950 capitalize">
                 {titleCommand()}
                 <span>
@@ -59,7 +59,7 @@ const Tasklist = ({ currentTask, removeTask, renameTasklist }) => {
                     </button>
                 </span>
             </h1>
-            <section className="text-center mt-5">
+            <section className="text-center mt-5 h-full">
                 <Tasks 
                     tasklistID={tasklistID}
                     removeTask={removeTask}

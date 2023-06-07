@@ -71,7 +71,7 @@ const Tasks = ({ tasklistID, removeTask }) => {
                             return (
                                 <div className='relative'>
                                     <Menu>
-                                        <Menu.Button className='rounded w-8 min-w-[2rem] h-6 mr-2 bg-slate-950 bg-opacity-80 flex justify-center pt-1' >
+                                        <Menu.Button className='rounded w-8 min-w-[2rem] h-6 mr-2 bg-slate-950 bg-opacity-80 flex justify-center pt-1 ml-2' >
                                             <Bars2Icon className='w-4 font-bold text-white' />
                                         </Menu.Button>
                                         <Menu.Items className='absolute w-40 -left-40 top-0 text-left bg-opacity-90 bg-slate-800 rounded p-1'>
@@ -130,7 +130,7 @@ const Tasks = ({ tasklistID, removeTask }) => {
     }, [tasks])
 
     return (
-        <ul className=' max-h-[57vh] overflow-y-scroll scroll-pl-2 pb-12'>
+        <ul className='overflow-y-scroll pb-12 h-full'>
             {renderTask()}
         </ul>
     )

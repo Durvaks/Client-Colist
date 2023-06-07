@@ -42,6 +42,7 @@ const Main = ({ onLogout, username }) => {
         Command.removeTask(currentTask._id, taskID)
             .then(async (response) => {
                 if (response.response) {
+                    console.log(response)
                     await getTasklists();
                 }
             })
@@ -97,7 +98,7 @@ const Main = ({ onLogout, username }) => {
     }, [userTasklists]);
 
     return (
-        <div className='h-screen min-h-screen bg-gradient-to-b from-teal-600 to-violet-900'>
+        <div className='h-screen min-h-screen min-w-[400px] bg-gradient-to-b from-teal-600 to-violet-900'>
             <nav className="flex bg-sky-950 justify-between h-8 text-white w-full">
                 <span className="mr-4 text-emerald-300 drop-shadow-lg font-bold ml-4 p-1">Colist</span>
                 <div className=' flex'>
@@ -107,7 +108,7 @@ const Main = ({ onLogout, username }) => {
                     </button>
                 </div>
             </nav>
-            <main className=" max-w-4xl m-auto h-[95%] relative w-screen">
+            <main className=" max-w-4xl m-auto h-[95vh] relative w-full">
                 <Tasklist
                     currentTask={currentTask}
                     removeTask={removeTask}

@@ -1,5 +1,5 @@
 export const Command = {
-    serverMainURL: 'https://colist.xanuvas.workers.dev/',
+    serverMainURL: 'https://colist.xanuvas.workers.dev',
     checkUser: async () => {
         return new Promise((resolve, reject) => {
             const token = localStorage.getItem('token');

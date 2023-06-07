@@ -1,5 +1,5 @@
 export const Command = {
-    serverMainURL: 'http://18.231.157.6:3333',
+    serverMainURL: 'http://18.231.157.6:3333/api/proxy',
     checkUser: async () => {
         return new Promise((resolve, reject) => {
             const token = localStorage.getItem('token');
